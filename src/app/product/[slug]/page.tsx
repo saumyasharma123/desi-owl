@@ -1,6 +1,9 @@
+"use client";
+
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ProductDetailContent } from "@/components/product/ProductDetailContent";
+import { use } from "react";
 
 interface ProductPageProps {
   params: Promise<{
@@ -8,8 +11,8 @@ interface ProductPageProps {
   }>;
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
+export default function ProductPage({ params }: ProductPageProps) {
+  const { slug } = use(params);
 
   return (
     <div className="min-h-screen bg-ivory">
