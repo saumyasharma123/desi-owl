@@ -8,6 +8,8 @@ import { Footer } from "@/components/layout/Footer";
 import { ShopContent } from "@/components/shop/ShopContent";
 import { Loader2 } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 function ShopFallback() {
   return (
     <div className="flex min-h-[400px] items-center justify-center">

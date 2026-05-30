@@ -7,6 +7,8 @@ import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { CategoriesSection } from "@/components/home/CategoriesSection";
 import { InstagramSection } from "@/components/home/InstagramSection";
 
+export const dynamic = 'force-dynamic';
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-ivory">
