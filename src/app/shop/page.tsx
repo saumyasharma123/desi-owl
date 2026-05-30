@@ -2,9 +2,19 @@
 
 "use client";
 
+import { Suspense } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ShopContent } from "@/components/shop/ShopContent";
+import { Loader2 } from "lucide-react";
+
+function ShopFallback() {
+  return (
+    <div className="flex min-h-[400px] items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin text-gold" />
+    </div>
+  );
+}
 
 export default function ShopPage() {
   return (
@@ -19,7 +29,9 @@ export default function ShopPage() {
             Discover our curated selection of luxury ethnic wear
           </p>
         </div>
-        <ShopContent />
+        <Suspense fallback={<ShopFallback />}>
+          <ShopContent />
+        </Suspense>
       </main>
       <Footer />
     </div>
