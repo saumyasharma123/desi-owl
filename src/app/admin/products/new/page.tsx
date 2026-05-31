@@ -303,6 +303,8 @@ export default function NewProductPage() {
                         type="button"
                         onClick={addImageUrl}
                         disabled={!currentImageUrl.trim()}
+                        variant="luxury"
+                        size="icon"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
@@ -330,7 +332,8 @@ export default function NewProductPage() {
                             <button
                               type="button"
                               onClick={() => removeImageUrl(index)}
-                              className="absolute right-2 top-2 rounded-full bg-red-600 p-1 text-white hover:bg-red-700"
+                              className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white shadow-lg transition-all hover:bg-red-700 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                              aria-label="Remove image"
                             >
                               <X className="h-4 w-4" />
                             </button>

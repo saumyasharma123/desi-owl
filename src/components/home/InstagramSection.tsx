@@ -18,13 +18,13 @@ export function InstagramSection() {
 
         <div className="flex justify-center">
           <a
-            href="https://instagram.com/desiowl"
+            href="https://www.instagram.com/shopatdesiowl?igsh=MXQyM2ppOWszczl4cg%3D%3D"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Button variant="luxury" size="lg" className="group">
               <Share2 className="mr-2 h-5 w-5" />
-              Follow @desiowl
+              Follow @shopatdesiowl
             </Button>
           </a>
         </div>

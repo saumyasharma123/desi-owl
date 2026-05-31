@@ -68,13 +68,13 @@ export function Footer() {
             <h4 className="font-semibold text-brown">Get in Touch</h4>
             <div className="space-y-3">
               <a
-                href="https://instagram.com/desiowl"
+                href="https://www.instagram.com/shopatdesiowl?igsh=MXQyM2ppOWszczl4cg%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-sm text-taupe transition-colors hover:text-gold"
               >
                 <Share2 className="h-4 w-4" />
-                <span>@desiowl</span>
+                <span>@shopatdesiowl</span>
               </a>
               <a
                 href="mailto:hello@desiowl.com"

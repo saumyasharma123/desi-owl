@@ -217,7 +217,7 @@ export function ProductFiltersComponent({
           </Select>
         </div>
 
-        <Button onClick={handleApplyFilters} className="w-full">
+        <Button onClick={handleApplyFilters} className="w-full" variant="luxury">
           Apply Filters
         </Button>
       </CardContent>
