@@ -25,20 +25,31 @@ export function ProductDetailContent({ slug }: ProductDetailContentProps) {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        setLoading(true);
         const data = await productService.getProductBySlug(slug);
         if (data) {
           setProduct(data);
           // Fetch related products
-          const related = await productService.getRelatedProducts(
-            data.id,
-            data.category,
-            4
-          );
-          setRelatedProducts(related);
+          try {
+            const related = await productService.getRelatedProducts(
+              data.id,
+              data.category,
+              4
+            );
+            setRelatedProducts(related);
+          } catch (relatedError) {
+            console.error("Error fetching related products:", relatedError);
+            // Don't show error for related products, just log it
+          }
+        } else {
+          console.error("Product not found");
         }
       } catch (error) {
         console.error("Error fetching product:", error);
-        toast.error("Failed to load product");
+        // Only show error toast if product actually failed to load
+        if (!product) {
+          toast.error("Failed to load product");
+        }
       } finally {
         setLoading(false);
       }

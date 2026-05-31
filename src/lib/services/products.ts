@@ -34,23 +34,13 @@ export const productService = {
       const productsRef = collection(db, PRODUCTS_COLLECTION);
       const constraints: QueryConstraint[] = [];
 
+      // Only add where clauses, no orderBy to avoid index requirements
       if (filters?.category) {
         constraints.push(where("category", "==", filters.category));
       }
 
       if (filters?.availability) {
         constraints.push(where("stockStatus", "==", filters.availability));
-      }
-
-      // Sorting
-      if (filters?.sortBy === "newest") {
-        constraints.push(orderBy("createdAt", "desc"));
-      } else if (filters?.sortBy === "price_asc") {
-        constraints.push(orderBy("price", "asc"));
-      } else if (filters?.sortBy === "price_desc") {
-        constraints.push(orderBy("price", "desc"));
-      } else {
-        constraints.push(orderBy("createdAt", "desc"));
       }
 
       const q = query(productsRef, ...constraints);
@@ -82,6 +72,17 @@ export const productService = {
             p.description.toLowerCase().includes(searchLower) ||
             p.tags.some((tag) => tag.toLowerCase().includes(searchLower))
         );
+      }
+
+      // Client-side sorting to avoid index requirements
+      if (filters?.sortBy === "newest") {
+        products.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      } else if (filters?.sortBy === "price_asc") {
+        products.sort((a, b) => a.price - b.price);
+      } else if (filters?.sortBy === "price_desc") {
+        products.sort((a, b) => b.price - a.price);
+      } else {
+        products.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
       }
 
       return products;
@@ -135,18 +136,20 @@ export const productService = {
   async getFeaturedProducts(limitCount: number = 8): Promise<Product[]> {
     try {
       const productsRef = collection(db, PRODUCTS_COLLECTION);
+      // Simplified query without orderBy to avoid index requirement
       const q = query(
         productsRef,
-        where("featured", "==", true),
-        orderBy("createdAt", "desc"),
-        limit(limitCount)
+        where("featured", "==", true)
       );
       const snapshot = await getDocs(q);
 
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...convertTimestamps(doc.data()),
-      }));
+      return snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...convertTimestamps(doc.data()),
+        }))
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+        .slice(0, limitCount);
     } catch (error) {
       console.error("Error fetching featured products:", error);
       throw error;
@@ -157,18 +160,20 @@ export const productService = {
   async getNewArrivals(limitCount: number = 8): Promise<Product[]> {
     try {
       const productsRef = collection(db, PRODUCTS_COLLECTION);
+      // Simplified query without orderBy to avoid index requirement
       const q = query(
         productsRef,
-        where("newArrival", "==", true),
-        orderBy("createdAt", "desc"),
-        limit(limitCount)
+        where("newArrival", "==", true)
       );
       const snapshot = await getDocs(q);
 
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...convertTimestamps(doc.data()),
-      }));
+      return snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...convertTimestamps(doc.data()),
+        }))
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+        .slice(0, limitCount);
     } catch (error) {
       console.error("Error fetching new arrivals:", error);
       throw error;
@@ -183,11 +188,10 @@ export const productService = {
   ): Promise<Product[]> {
     try {
       const productsRef = collection(db, PRODUCTS_COLLECTION);
+      // Simplified query without orderBy to avoid index requirement
       const q = query(
         productsRef,
-        where("category", "==", category),
-        orderBy("createdAt", "desc"),
-        limit(limitCount + 1)
+        where("category", "==", category)
       );
       const snapshot = await getDocs(q);
 
@@ -197,6 +201,7 @@ export const productService = {
           ...convertTimestamps(doc.data()),
         }))
         .filter((p) => p.id !== productId)
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
         .slice(0, limitCount);
     } catch (error) {
       console.error("Error fetching related products:", error);
